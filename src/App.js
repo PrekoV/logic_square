@@ -45,8 +45,15 @@ class App extends Component {
 				}
 				console.log("PUSH ARRAY")
 				currentArray[colId + 1].rows[rowId].color = this.state.activeColor
-			} else {
+
+			} else if (currentArray[colId].rows[rowId].color === this.state.activeColor
+				&& currentArray[colId + 1].rows[rowId].color === this.state.passiveColor) {
+
 				currentArray[colId + 1].rows[rowId].color = this.state.activeColor
+
+			} else if (currentArray[colId].rows[rowId].color === this.state.activeColor
+				&& currentArray[colId + 1].rows[rowId].color === this.state.activeColor) {
+
 				if (!currentArray[colId].rows[rowId + 1] && this.state.list[colId + 1].rows[rowId].color === this.state.activeColor) {
 					for (let i = 0; i < col; i++) {
 						currentArray[i].rows.push({
@@ -55,25 +62,34 @@ class App extends Component {
 						})
 					}
 					currentArray[colId].rows[rowId + 1].color = this.state.activeColor
-				} else {
+
+				} else if (currentArray[colId].rows[rowId].color === this.state.activeColor
+					&& currentArray[colId + 1].rows[rowId].color === this.state.activeColor
+					&& currentArray[colId].rows[rowId + 1].color === this.state.passiveColor) {
+
 					currentArray[colId].rows[rowId + 1].color = this.state.activeColor
 
+				} else
+
 					if (currentArray[colId - 1]
+						&& currentArray[colId].rows[rowId].color === this.state.activeColor
 						&& currentArray[colId + 1].rows[rowId].color === this.state.activeColor
 						&& currentArray[colId].rows[rowId + 1].color === this.state.activeColor
+						&& currentArray[colId - 1].rows[rowId].color === this.state.passiveColor
 					) {
 						currentArray[colId - 1].rows[rowId].color = this.state.activeColor
 					}
-
-					//else {
-					if (currentArray[colId].rows[rowId - 1]
+					else if (currentArray[colId].rows[rowId - 1]
+						&& currentArray[colId].rows[rowId].color === this.state.activeColor
 						&& currentArray[colId + 1].rows[rowId].color === this.state.activeColor
 						&& currentArray[colId].rows[rowId + 1].color === this.state.activeColor
+						&& (currentArray[colId - 1]
+							&& currentArray[colId - 1].rows[rowId].color === this.state.activeColor
+							|| !currentArray[colId - 1])
+						&& currentArray[colId].rows[rowId - 1].color === this.state.passiveColor
 					) {
 						currentArray[colId].rows[rowId - 1].color = this.state.activeColor
 					}
-					//	}
-				}
 			}
 		}
 
@@ -117,4 +133,3 @@ class App extends Component {
 }
 
 export default App
-
