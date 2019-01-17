@@ -1,135 +1,106 @@
 import React, { Component } from 'react'
+import Item from './item';
+import HTML5Backend from 'react-dnd-html5-backend';
+import { DragDropContext } from 'react-dnd';
+import Target from './target';
 
 class App extends Component {
 
 	state = {
-		activeColor: 'red',
-		passiveColor: 'lightgrey',
 		list: [
-			{
-				id: 0, rows:
-					[{ id: 0, color: 'lightgrey' }, { id: 1, color: 'lightgrey' }, { id: 2, color: 'lightgrey' }]
-			},
-			{
-				id: 1, rows:
-					[{ id: 0, color: 'lightgrey' }, { id: 1, color: 'lightgrey' }, { id: 2, color: 'lightgrey' }]
-			},
-			{
-				id: 2, rows:
-					[{ id: 0, color: 'lightgrey' }, { id: 1, color: 'lightgrey' }, { id: 2, color: 'lightgrey' }]
-			}
-		],
-		maxCols: 3,
-		maxRows: 3
+			[0, 0, 0],
+			[0, 0, 0],
+			[0, 0, 0]
+		]
 	}
 
-	colorElem = (colId, rowId) => {
+	colorElem = (rowId, colId) => {
 		console.log("Enter square: " + colId + " " + rowId)
-		let currentArray = [...this.state.list];
-		let col = this.state.maxCols
-		let row = this.state.maxRows
+		let list = [...this.state.list]
 
-		if (currentArray[colId].rows[rowId].color != this.state.activeColor) {
-			currentArray[colId].rows[rowId].color = this.state.activeColor;
-			console.log("CHANGE COLOR")
-		} else {
-			if (!currentArray[colId + 1]) {
-				currentArray.push({
-					id: currentArray.length,
-					rows: []
-				})
-				for (let i = 0; i < row; i++) {
-					currentArray[colId + 1].rows.push({
-						id: i, color: this.state.passiveColor
-					})
-				}
-				console.log("PUSH ARRAY")
-				currentArray[colId + 1].rows[rowId].color = this.state.activeColor
-
-			} else if (currentArray[colId].rows[rowId].color === this.state.activeColor
-				&& currentArray[colId + 1].rows[rowId].color === this.state.passiveColor) {
-
-				currentArray[colId + 1].rows[rowId].color = this.state.activeColor
-
-			} else if (currentArray[colId].rows[rowId].color === this.state.activeColor
-				&& currentArray[colId + 1].rows[rowId].color === this.state.activeColor) {
-
-				if (!currentArray[colId].rows[rowId + 1] && this.state.list[colId + 1].rows[rowId].color === this.state.activeColor) {
-					for (let i = 0; i < col; i++) {
-						currentArray[i].rows.push({
-							id: currentArray[i].rows.length,
-							color: this.state.passiveColor
-						})
-					}
-					currentArray[colId].rows[rowId + 1].color = this.state.activeColor
-
-				} else if (currentArray[colId].rows[rowId].color === this.state.activeColor
-					&& currentArray[colId + 1].rows[rowId].color === this.state.activeColor
-					&& currentArray[colId].rows[rowId + 1].color === this.state.passiveColor) {
-
-					currentArray[colId].rows[rowId + 1].color = this.state.activeColor
-
-				} else
-
-					if (currentArray[colId - 1]
-						&& currentArray[colId].rows[rowId].color === this.state.activeColor
-						&& currentArray[colId + 1].rows[rowId].color === this.state.activeColor
-						&& currentArray[colId].rows[rowId + 1].color === this.state.activeColor
-						&& currentArray[colId - 1].rows[rowId].color === this.state.passiveColor
-					) {
-						currentArray[colId - 1].rows[rowId].color = this.state.activeColor
-					}
-					else if (currentArray[colId].rows[rowId - 1]
-						&& currentArray[colId].rows[rowId].color === this.state.activeColor
-						&& currentArray[colId + 1].rows[rowId].color === this.state.activeColor
-						&& currentArray[colId].rows[rowId + 1].color === this.state.activeColor
-						&& (currentArray[colId - 1]
-							&& currentArray[colId - 1].rows[rowId].color === this.state.activeColor
-							|| !currentArray[colId - 1])
-						&& currentArray[colId].rows[rowId - 1].color === this.state.passiveColor
-					) {
-						currentArray[colId].rows[rowId - 1].color = this.state.activeColor
-					}
+		if (list[rowId][colId] === 0) {
+			list[rowId][colId] = 1
+		} else if (list[rowId - 1] && list[rowId - 1][colId] === 0) {
+			list[rowId - 1][colId] = 1
+		} else if (list[rowId][colId + 1] === 0) {
+			list[rowId][colId + 1] = 1
+		} else if (!list[rowId][colId + 1]) {
+			console.log(list[rowId][colId + 1])
+			for (let i = 0; i < list.length; i++) {
+				list[i].push(0)
 			}
+			list[rowId][colId + 1] = 1
+		} else if (!list[rowId + 1]) {
+			list.push([])
+			for (let i = 0; i < list[0].length; i++) {
+				list[list.length - 1].push(0)
+			}
+			list[rowId + 1][colId] = 1
+		} else if (list[rowId + 1] && list[rowId + 1][colId] === 0) {
+			list[rowId + 1][colId] = 1
+		} else if (list[rowId][colId - 1] === 0) {
+			list[rowId][colId - 1] = 1
 		}
 
-		col = currentArray.length
-		row = currentArray[0].rows.length
-
-		this.setState({ list: currentArray, maxCols: col, maxRows: row })
-		console.log(this.state.list)
-		console.log(this.state.maxCols + " " + this.state.maxRows)
+		this.setState({ list })
+		console.log(this.state)
 	}
 
 	render() {
-
+		console.log('render')
 		return (
-			<div className="App">
-				<div className="list" style={{ display: 'flex' }}>
-					{
-						this.state.list.map(elem => {
+			<div className="App" style={{ display: 'flex', height: '100vh', width: '100vw' }}>
+				<div style={{ borderRight: 'solid 3px black', height: '100%' }}>
+					<Item />
+				</div>
+				<div className="target" style={{ backgroundColor: 'lightgrey', width: '100%' }}>
+					<div style={{ fontSize: 24, backgroundColor: 'black', color: 'white', padding: 5, paddingLeft: '40%' }}>Drag'n'Drop App</div>
+					<div className="list" style={{ display: 'flex', flexDirection: 'column', marginLeft: 40, marginTop: 40 }}>
+						{this.state.list.map((elem, i) => {
 							return (
-								<div key={elem.id}>
-									{
-										elem.rows.map(item => {
-											return (
-												<div className="item"
-													key={item.id}
-													style={{ margin: 20, width: 80, height: 80, border: 'solid 2px ' + item.color }}
-													onClick={() => this.colorElem(elem.id, item.id)}
-												>
-												</div>
-											)
-										})
+								<div key={i} style={{ display: 'flex', flexDirection: 'row' }}>
+									{elem.map((item, j) => {
+										return (
+
+											<Target key={j}
+												colorElem={this.colorElem}
+												i={i}
+												j={j}
+												item={item}
+												style={{
+													margin: 20,
+													width: 80,
+													height: 80,
+													//	border: `solid 2px lightgrey`
+												}}
+											/>
+
+											// <div className="item"
+											// 	key={j}
+											// 	style={{
+											// 		margin: 20,
+											// 		width: 80,
+											// 		height: 80,
+											// 		border: `solid 2px ${item !== 1 ? 'lightgrey' : 'red'}`
+											// 	}}
+											// 	colorElem = {this.colorElem}
+											// 	i = {i}
+											// 	j = {j}
+											// 	item = {item}
+											// 	onClick={() => this.colorElem(i, j)}
+											// >
+											// </div>
+										)
+									})
 									}
 								</div>
 							)
-						})
-					}
+						})}
+					</div>
 				</div>
 			</div>
 		);
 	}
 }
 
-export default App
+export default DragDropContext(HTML5Backend)(App)
