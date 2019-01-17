@@ -29,8 +29,8 @@ class Item extends Component {
     render() {
         const { connectDragSource } = this.props;
         return connectDragSource(
-            <div className="item" style={{ width: 80, height: 80, border: 'solid 2px red', margin: 40 }}>
-                Take me daddy
+            <div className="item">
+                Take this
             </div>
         )
     }

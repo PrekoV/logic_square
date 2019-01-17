@@ -1,0 +1,58 @@
+body {
+    margin: 0;
+}
+
+.App {
+    display: flex;
+    height: 100%;
+    width: 100vw;
+}
+
+.itemZone {
+    height: 100% 
+}
+
+.targetZone {
+    background-color: rgb(193, 196, 196);
+    width: 100%;
+    border-left: solid 3px black;
+    height: 100%;
+}
+
+.titleApp {
+    font-size: 28px;
+    background-color: black;
+    color: white;
+    padding: 5px;
+    padding-left: 40% 
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px;
+    width: 80px;
+    height: 80px;
+    border: solid 2px red;
+}
+
+.target {
+    margin: 20px;
+    width: 80px;
+    height: 80px
+}
+
+.footer{
+    font-size: 18px;
+    background-color: black;
+    color: lightgrey;
+    padding: 5px;
+    padding-left: 70% 
+}

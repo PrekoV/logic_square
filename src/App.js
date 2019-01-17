@@ -3,14 +3,17 @@ import Item from './item';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext } from 'react-dnd';
 import Target from './target';
+import './App.css'
 
 class App extends Component {
 
 	state = {
 		list: [
-			[0, 0, 0],
-			[0, 0, 0],
-			[0, 0, 0]
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0]
 		]
 	}
 
@@ -46,56 +49,37 @@ class App extends Component {
 		console.log(this.state)
 	}
 
+
+
 	render() {
 		console.log('render')
 		return (
-			<div className="App" style={{ display: 'flex', height: '100vh', width: '100vw' }}>
-				<div style={{ borderRight: 'solid 3px black', height: '100%' }}>
+			<div className="App">
+				<div className="itemZone">
 					<Item />
 				</div>
-				<div className="target" style={{ backgroundColor: 'lightgrey', width: '100%' }}>
-					<div style={{ fontSize: 24, backgroundColor: 'black', color: 'white', padding: 5, paddingLeft: '40%' }}>Drag'n'Drop App</div>
-					<div className="list" style={{ display: 'flex', flexDirection: 'column', marginLeft: 40, marginTop: 40 }}>
+				<div className="targetZone">
+					<div className="titleApp">Drag'n'Drop App</div>
+					<div className="list">
 						{this.state.list.map((elem, i) => {
 							return (
 								<div key={i} style={{ display: 'flex', flexDirection: 'row' }}>
 									{elem.map((item, j) => {
 										return (
-
 											<Target key={j}
 												colorElem={this.colorElem}
 												i={i}
 												j={j}
 												item={item}
-												style={{
-													margin: 20,
-													width: 80,
-													height: 80,
-													//	border: `solid 2px lightgrey`
-												}}
+												color={item !== 1 ? 'lightgrey' : 'brown'}
 											/>
-
-											// <div className="item"
-											// 	key={j}
-											// 	style={{
-											// 		margin: 20,
-											// 		width: 80,
-											// 		height: 80,
-											// 		border: `solid 2px ${item !== 1 ? 'lightgrey' : 'red'}`
-											// 	}}
-											// 	colorElem = {this.colorElem}
-											// 	i = {i}
-											// 	j = {j}
-											// 	item = {item}
-											// 	onClick={() => this.colorElem(i, j)}
-											// >
-											// </div>
 										)
 									})
 									}
 								</div>
 							)
 						})}
+
 					</div>
 				</div>
 			</div>

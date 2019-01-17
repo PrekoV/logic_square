@@ -22,22 +22,18 @@ function collect(connect, monitor) {
 
 class Target extends Component {
     render() {
-        const { item, isOver, connectDropTarget } = this.props;
-        const color = item !== 1 ? 'grey' : 'red'
+        const { color, isOver, connectDropTarget } = this.props;
         return connectDropTarget(
-            <div className="item" style={{
-                margin: 20,
-                width: 80,
-                height: 80,
-                //  border: ' solid 2px red'
-                border: 'solid 2px ' + color
-            }}>
+            <div className="target" style={{ border: 'solid 2px ' + color }}>
                 {isOver &&
                     <div style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                         height: '100%',
                         width: '100%',
-                        backgroundColor: 'yellow'
-                    }} > fuck </div>
+                        backgroundColor: 'lightyellow'
+                    }} > Put here </div>
                 }
             </div>
         )
